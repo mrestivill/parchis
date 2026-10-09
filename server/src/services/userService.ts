@@ -40,7 +40,7 @@ export const userService = {
 
             // Determine role: If first user, make admin
             let role = 'user';
-            if (firstUserIsAdmin) {
+            if (FIRST_USER_IS_ADMIN) {
                 const userCount: any = db.prepare('SELECT COUNT(*) as count FROM users').get();
                 role = userCount.count === 0 ? 'admin' : 'user';
             }
