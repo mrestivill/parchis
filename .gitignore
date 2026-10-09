@@ -1,0 +1,40 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Testing
+coverage
+
+# Production
+dist
+build
+
+# Misc
+.DS_Store
+.npm
+*.log
+*.db
+
+# IDEs
+.idea
+.vscode
+*.swp
+*.swo
+*.apk
+android-sdk/
+parchis-release.keystore
+android/key.properties
+
+# Environment and Secrets
+.env
+.env.local
+.env.production
+.env.development
+*.env
+
+# Databases
+*.db
+*.sqlite
+data/
+comandos.md

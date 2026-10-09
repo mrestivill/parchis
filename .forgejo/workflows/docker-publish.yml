@@ -1,0 +1,44 @@
+name: Publish Docker Image
+
+on:
+  push:
+    tags:
+      - 'v*' # Se ejecuta al subir etiquetas de versión (ej: v0.9.33)
+
+jobs:
+  push_to_registry:
+    name: Build & Push Docker image to Codeberg Registry
+    runs-on: codeberg-tiny
+    timeout-minutes: 30
+    container:
+      image: public.ecr.aws/docker/library/node:22-alpine
+    steps:
+      - name: Install build tools
+        run: apk add --no-cache git python3 make g++
+
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Install dependencies & build app
+        run: npm ci && npm run build
+
+      - name: Prune dev dependencies
+        run: npm prune --production
+
+      - name: Create registry credentials
+        run: |
+          mkdir -p ${{ forgejo.workspace }}/.docker
+          printf '{"auths":{"codeberg.org":{"auth":"%s"}}}' \
+            "$(printf '%s:%s' '${{ github.repository_owner }}' '${{ secrets.DOCKER_REGISTRY_TOKEN }}' | base64 | tr -d '\n')" \
+            > ${{ forgejo.workspace }}/.docker/config.json
+
+      - name: Build and push Docker image with Kaniko
+        uses: docker://gcr.io/kaniko-project/executor:latest
+        env:
+          DOCKER_CONFIG: ${{ forgejo.workspace }}/.docker
+        with:
+          args: >-
+            --context=${{ forgejo.workspace }}
+            --dockerfile=${{ forgejo.workspace }}/Dockerfile.ci
+            --destination=codeberg.org/${{ github.repository }}:${{ github.ref_name }}
+            --destination=codeberg.org/${{ github.repository }}:latest

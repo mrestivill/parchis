@@ -1,0 +1,32 @@
+# Dockerfile solo para CI: espera que los artefactos ya estén pre-construidos
+# El workflow de CI hace npm ci + npm run build + npm prune antes de llamar kaniko
+FROM public.ecr.aws/docker/library/node:22-alpine
+
+# Instalar solo lo necesario para runtime
+RUN apk add --no-cache tini
+
+# Crear usuario no-root
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+WORKDIR /app
+
+# Crear el directorio de datos con permisos
+RUN mkdir -p /app/server/data && chown nodejs:nodejs /app/server/data
+
+# Copiar artefactos pre-construidos (node_modules ya prunedas, dist ya compilado)
+COPY --chown=nodejs:nodejs node_modules ./node_modules
+COPY --chown=nodejs:nodejs package*.json ./
+COPY --chown=nodejs:nodejs client/dist ./client/dist
+COPY --chown=nodejs:nodejs server/dist ./server/dist
+COPY --chown=nodejs:nodejs server/package.json ./server/
+COPY --chown=nodejs:nodejs shared/dist ./shared/dist
+COPY --chown=nodejs:nodejs shared/package.json ./shared/
+
+# Cambiar a usuario no-root
+USER nodejs
+
+EXPOSE 3000
+
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["npm", "start"]
