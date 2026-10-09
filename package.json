@@ -14,7 +14,7 @@
     "start": "npm start --workspace=server"
   },
   "devDependencies": {
-    "@types/node": "^20.11.5",
+    "@types/node": "^24",
     "typescript": "^5.3.3"
   }
 }

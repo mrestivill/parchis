@@ -1,7 +1,11 @@
 {
     "compilerOptions": {
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "types": ["node"],
+        "moduleResolution": "NodeNext", 
         "target": "es2020",
-        "module": "commonjs",
+        "module": "nodenext",
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
