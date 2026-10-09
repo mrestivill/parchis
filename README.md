@@ -1,5 +1,8 @@
 # 🎲 Parchis Game - Monorepo
 
+Original code from: https://codeberg.org/baner/parchis
+
+
 > [!CAUTION]  
 > **✨ 100% Vibecoded ✨**  
 > This application was built entirely through vibecoding.   
