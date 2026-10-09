@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const SALT_ROUNDS = 10;
+const FIRST_USER_IS_ADMIN = process.env.FIRST_USER_IS_ADMIN === 'true';
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {
     console.error('[FATAL] JWT_SECRET is not configured in the environment variables.');
@@ -38,8 +39,11 @@ export const userService = {
             if (existing) return { success: false, error: 'User already exists' };
 
             // Determine role: If first user, make admin
-            const userCount: any = db.prepare('SELECT COUNT(*) as count FROM users').get();
-            const role = userCount.count === 0 ? 'admin' : 'user';
+            let role = 'user';
+            if (firstUserIsAdmin) {
+                const userCount: any = db.prepare('SELECT COUNT(*) as count FROM users').get();
+                role = userCount.count === 0 ? 'admin' : 'user';
+            }
 
             const hash = await bcrypt.hash(password, SALT_ROUNDS);
 
