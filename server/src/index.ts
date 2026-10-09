@@ -9,6 +9,15 @@ import path from 'path';
 const app = express();
 app.use(cors());
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
 // Serve Static Assets (Production Mode)
 // Serves the built React app from client/dist via the Backend port
 app.use(express.static(path.join(__dirname, '../../client/dist')));
