@@ -5,6 +5,10 @@ import jwt from 'jsonwebtoken';
 
 const SALT_ROUNDS = 10;
 const FIRST_USER_IS_ADMIN = process.env.FIRST_USER_IS_ADMIN === 'true';
+console.log(
+  `[config] FIRST_USER_IS_ADMIN is ${FIRST_USER_IS_ADMIN ? 'ENABLED' : 'DISABLED'} ` +
+  `(first registered user ${FIRST_USER_IS_ADMIN ? 'will' : 'will NOT'} become admin)`
+);
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {
     console.error('[FATAL] JWT_SECRET is not configured in the environment variables.');
