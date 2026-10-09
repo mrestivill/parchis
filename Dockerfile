@@ -1,5 +1,5 @@
 # Multi-stage build para optimizar tamaño
-FROM public.ecr.aws/docker/library/node:22-alpine AS builder
+FROM public.ecr.aws/docker/library/node:24-alpine AS builder
 
 # Instalar dependencias de build
 RUN apk add --no-cache python3 make g++
