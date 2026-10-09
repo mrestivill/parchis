@@ -1,6 +1,6 @@
 {
   "name": "parchis-game-monorepo",
-  "version": "0.9.34",
+  "version": "0.9.35",
   "private": true,
   "workspaces": [
     "client",
