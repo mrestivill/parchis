@@ -1,4 +1,8 @@
 # 🎲 Parchis Game - Monorepo
+[![Build and sign](https://github.com/mrestivill/parchis/actions/workflows/build-docker.yaml/badge.svg)](https://github.com/mrestivill/parchis/actions/workflows/build-docker.yaml)
+
+[![Signed with cosign](https://img.shields.io/badge/signed%20with-cosign-4B32C3?logo=sigstore)](#verifying-the-image)
+
 
 Original code from: https://codeberg.org/baner/parchis
 
